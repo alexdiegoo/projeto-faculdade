@@ -15,6 +15,7 @@ router.get("/alunos", AlunoController.index);
 router.post("/alunos", AlunoController.create);
 router.delete("/alunos/:id", authenticateToken, AlunoController.delete);
 router.put("/alunos/:id", authenticateToken, AlunoController.update);
+router.put("/aluno/changePassword", AlunoController.changePassword);
 
 router.post("/login", AlunoController.login);
 
