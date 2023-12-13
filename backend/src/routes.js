@@ -1,6 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
+const { authenticateToken } = require("./middlewares/authentication");
 
 const AlunoController = require("./controllers/alunosController");
 
@@ -12,8 +13,8 @@ router.get("/", (req, res) => {
 
 router.get("/alunos", AlunoController.index);
 router.post("/alunos", AlunoController.create);
-router.delete("/alunos/:id", AlunoController.delete);
-router.put("/alunos/:id", AlunoController.update);
+router.delete("/alunos/:id", authenticateToken, AlunoController.delete);
+router.put("/alunos/:id", authenticateToken, AlunoController.update);
 
 router.post("/login", AlunoController.login);
 

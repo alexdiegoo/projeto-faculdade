@@ -36,7 +36,19 @@ class AlunoController {
         expiresIn: "7d",
       });
 
-      return res.status(200).json({ message: "Login bem-sucedido", token });
+      return res
+        .status(200)
+        .json({
+          message: "Login bem-sucedido",
+          token,
+          aluno: {
+            nome: aluno.nome,
+            id: aluno.id,
+            email: aluno.email,
+            matricula: aluno.matricula,
+            cpf: aluno.cpf,
+          },
+        });
     } catch (error) {
       console.log("[Erro ao fazer login] " + error);
       return res.status(400).json({ message: "Erro ao buscar alunos" });
@@ -63,7 +75,7 @@ class AlunoController {
 
       return res.status(201).json({ newAluno });
     } catch (error) {
-      console.log("[Erro ao cadastrar alunos] " + error);
+      console.log("[Erro ao cadastrar aluno] " + error);
       return res.status(400).json({ message: "Erro ao cadastrar aluno" });
     }
   }
@@ -75,15 +87,15 @@ class AlunoController {
       await Aluno.destroy({ where: { id } });
       return res.status(200).json({ message: "Aluno deletado com sucesso!" });
     } catch (error) {
-      console.log("[Erro ao excluir alunos] " + error);
+      console.log("[Erro ao excluir aluno] " + error);
       return res.status(400).json({ message: "Erro ao deletar aluno" });
     }
   }
 
   async update(req, res) {
     try {
-      const { id } = req.params;
-      const { nome, email } = req.body;
+      const { userId: id } = req.user;
+      const { nome, email, password } = req.body;
 
       const aluno = await Aluno.findByPk(id);
 
@@ -97,7 +109,7 @@ class AlunoController {
       await aluno.save();
       return res.status(200).json({ ...aluno });
     } catch (error) {
-      console.log("[Erro ao atualizar alunos] " + error);
+      console.log("[Erro ao atualizar aluno] " + error);
       return res.status(400).json({ message: "Erro ao atualizar aluno" });
     }
   }
